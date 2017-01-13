@@ -1,0 +1,4 @@
+*.pyc
+ProjectConfig.py
+*.sql
+*.csv
