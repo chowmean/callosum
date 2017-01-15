@@ -11,7 +11,7 @@ class awsS3:
 	        aws_secret_access_key = secret_key,
 	        is_secure=False
 	        )
-		bucket = conn.get_bucket("prod-practo-tipoca")
+		bucket = conn.get_bucket("asdtasdasipoca")
 		keys_list=[]
 		marker = None
 		while True:

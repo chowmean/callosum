@@ -1,4 +1,5 @@
 import boto.rds
+import boto.ec2
 import mysql.connector
 import csv
 import sys
@@ -38,6 +39,11 @@ def do_work(database):
            		temp_process3.wait()
 
 
+def destroy_instance():
+    temp_process=Popen('shutdown -h now', shell=True)
+
+
 if __name__ == "__main__":
     do_work('feedback')
     do_work('fabric')
+    destroy_instance()
