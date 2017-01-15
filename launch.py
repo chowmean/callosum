@@ -1,5 +1,6 @@
 import boto.ec2
 from ProjectConfig import *
+from subprocess import call,Popen
 
 conn = boto.ec2.connect_to_region("us-west-2",
         aws_access_key_id=AWSKEY,
@@ -17,3 +18,7 @@ while instance.state != 'running':
         print '...instance is %s' % instance.state
         time.sleep(10)
         instance.update()
+
+
+runProcess=Popen('cd callosum_automated', shell=True)
+runProcess=Popen('python run.py', shell=True)
