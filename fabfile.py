@@ -36,3 +36,7 @@ def make_installs():
     run("aptitude -y upgrade")
     install_pip()
     get_project()
+
+def run():
+    run('cd callosum_automated')
+    run('python run.py')

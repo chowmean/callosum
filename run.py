@@ -23,19 +23,20 @@ def do_work(database):
     filelist = sorted(filelist, key=lambda k: k.last_modified)
     filelist.reverse()
     Iterated=[]
+    echo blahblahblahblah >> OUTFILE
     for fileitem in fileset:
     	for file in filelist:
     		if  file.name.split('/')[1].split('$')[0]==fileitem and fileitem not in Iterated:
     			Iterated.append(fileitem)
     			print file.name
     			file.get_contents_to_filename(file.name.split('/')[1].split('$')[0]+'.csv')
-    			temp_process1=Popen('mysqlimport --local -u '+LOCAL_USER+' -p'+LOCAL_PASSWORD+' --fields-terminated-by=, '+database+' '+file.name.split('/')[1].split('$')[0]+'.csv', shell=True)
+    			temp_process1=Popen('mysqlimport --local -u '+LOCAL_USER+' -p'+LOCAL_PASSWORD+' --fields-terminated-by=, '+database+' '+file.name.split('/')[1].split('$')[0]+'.csv  >> process.log', shell=True)
     			temp_process1.wait()
-	                remove_csv_process=Popen('rm '+file.name.split('/')[1].split('$')[0]+'.csv', shell=True)
+	                remove_csv_process=Popen('rm '+file.name.split('/')[1].split('$')[0]+'.csv >> process.log', shell=True)
         	        remove_csv_process.wait()
-               		temp_process2=Popen('mysqldump -u '+LOCAL_USER+' -p'+LOCAL_PASSWORD+' '+database+' '+ file.name.split('/')[1].split('$')[0] +' > table.sql', shell=True)
+               		temp_process2=Popen('mysqldump -u '+LOCAL_USER+' -p'+LOCAL_PASSWORD+' '+database+' '+ file.name.split('/')[1].split('$')[0] +' > table.sql >> process.log', shell=True)
     	       		temp_process2.wait()
-           		temp_process3=Popen('mysql -u '+DBUSER+' -h '+HOST+' -p'+DBPASSWORD+' '+database+' < table.sql', shell=True)
+           		temp_process3=Popen('mysql -u '+DBUSER+' -h '+HOST+' -p'+DBPASSWORD+' '+database+' < table.sql >> process.log', shell=True)
            		temp_process3.wait()
 
 
@@ -44,6 +45,8 @@ def destroy_instance():
 
 
 if __name__ == "__main__":
+    startlog=Popen('echo Starting >> process.log', shell=True)
+    startlog.wait()
     do_work('feedback')
     do_work('fabric')
     destroy_instance()

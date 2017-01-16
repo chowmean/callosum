@@ -1,6 +1,7 @@
 import boto.ec2
 from ProjectConfig import *
 from subprocess import call,Popen
+from fabric.api import *
 
 conn = boto.ec2.connect_to_region("us-west-2",
         aws_access_key_id=AWSKEY,
@@ -20,5 +21,4 @@ while instance.state != 'running':
         instance.update()
 
 
-runProcess=Popen('cd callosum_automated', shell=True)
-runProcess=Popen('python run.py', shell=True)
+runProcess=Popen('fab run', shell=True)
