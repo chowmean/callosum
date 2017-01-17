@@ -54,10 +54,10 @@ if __name__ == "__main__":
 
 
     reservations = conn.get_all_instances(filters={"tag:Name" : TAGNAME})
-    for reservation in reservations
-        if reservation.instances[0].state=='running'
-        print instance[0].instance_type
-        print instance[0].id
-        a=input("Process Complete. Terminate?")
-        if a=='y' || a=='Y' || a=="yes" || a=="YES":
-            #conn.terminate_instances(instance[0].id)
+    for reservation in reservations:
+        if reservation.instances[0].state=='running':
+            print reservation.instances[0].instance_type
+            print reservation.instances[0].id
+            a=raw_input("Process Complete. Terminate?")
+            if a=='y' or a=='Y' or a=="yes" or a=="YES":
+                conn.terminate_instances(instance[0].id)
