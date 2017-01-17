@@ -11,7 +11,6 @@ from subprocess import call,Popen
 
 def do_work(database):
     if(database=="feedback"):
-        print 'here'
         fileset = FEEDBACK_TABLES
         q=Popen('mysql -u '+LOCAL_USER+' '+database+' < created_feedback.sql >> process.log', shell=True)
         q.wait()
@@ -41,12 +40,13 @@ def do_work(database):
     	       		temp_process2.wait()
            		temp_process3=Popen('mysql -u '+DBUSER+' -h '+HOST+' -p'+DBPASSWORD+' '+database+' < table.sql >> process.log', shell=True)
            		temp_process3.wait()
+                	break;
 
 
 if __name__ == "__main__":
     startlog=Popen('echo Starting >> process.log', shell=True)
     startlog.wait()
-    do_work('feedback')
+    #do_work('feedback')
     #do_work('fabric')
     conn = boto.ec2.connect_to_region("ap-southeast-1",
             aws_access_key_id=AWSKEYEC,
@@ -54,7 +54,10 @@ if __name__ == "__main__":
 
 
     reservations = conn.get_all_instances(filters={"tag:Name" : TAGNAME})
-    instance=reservations[0].instances
-    print instance[0].instance_type
-    print instance[0].id
-    conn.terminate_instances(instance[0].id)
+    for reservation in reservations
+        if reservation.instances[0].state=='running'
+        print instance[0].instance_type
+        print instance[0].id
+        a=input("Process Complete. Terminate?")
+        if a=='y' || a=='Y' || a=="yes" || a=="YES":
+            #conn.terminate_instances(instance[0].id)
