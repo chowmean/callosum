@@ -12,11 +12,11 @@ from subprocess import call,Popen
 def do_work(database):
     if(database=="feedback"):
         fileset = FEEDBACK_TABLES
-        q=Popen('mysql -u '+LOCAL_USER+' -h '+HOST+' '+database+' < callosum/created_feedback.sql >> process.log', shell=True)
+        q=Popen('mysql -u '+LOCAL_USER+' -h '+HOST+' '+database+' < created_feedback.sql >> process.log', shell=True)
         q.wait()
     else:
         fileset = FABRIC_TABLES
-        q=Popen('mysql -u '+LOCAL_USER+' -h '+HOST+' '+database+' < callosum/created_fabric.sql >> process.log', shell=True)
+        q=Popen('mysql -u '+LOCAL_USER+' -h '+HOST+' '+database+' < created_fabric.sql >> process.log', shell=True)
         q.wait()
     a = Utility.awsS3()
     access_key = AWSKEY
