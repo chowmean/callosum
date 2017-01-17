@@ -43,4 +43,4 @@ def runn():
     #install_dependencies()
     with cd('callosum'):
         run('ls')
-        run('python callosum/run.py')
+        run('python run.py')
