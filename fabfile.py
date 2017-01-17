@@ -8,7 +8,6 @@ from ProjectConfig import *
 
 
 env.hosts = [
-    AWS_HOST,
   # 'ip.add.rr.ess
   # 'server2.domain.tld',
 ]
@@ -31,12 +30,20 @@ def install_pip():
     run("cd pip-9.0.1")
     run("python setup.py install")
 
+def install_dependencies():
+    run("pip install boto")
+    run("sudo apt-get install mysql-server")
+
 def make_installs():
-    run("aptitude    update")
+    run("aptitude   update")
     run("aptitude -y upgrade")
     install_pip()
     get_project()
 
 def run():
-    run('cd callosum_automated')
+    # make_installs()
+    # install_pip()
+    get_project()
+    #install_dependencies()
+    run('cd callosum')
     run('python run.py')

@@ -2,3 +2,5 @@
 ProjectConfig.py
 *.sql
 *.csv
+*.log
+*.pem

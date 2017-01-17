@@ -11,7 +11,7 @@ class awsS3:
 	        aws_secret_access_key = secret_key,
 	        is_secure=False
 	        )
-		bucket = conn.get_bucket("asdtasdasipoca")
+		bucket = conn.get_bucket("prod-practo-tipoca")
 		keys_list=[]
 		marker = None
 		while True:
@@ -64,6 +64,7 @@ class awsS3:
 		statement=statement.replace('character varying','varchar')
 		statement=statement.replace('character','varchar')
 		statement=statement.replace('timestamp without time zone','datetime')
+		statement=statement.replace('"timestamp"','timestamp')
 		b.write(statement);
 		a.close()
 		b.close()
