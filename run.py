@@ -58,5 +58,5 @@ if __name__ == "__main__":
         if reservation.instances[0].state=='running':
             print reservation.instances[0].instance_type
             print reservation.instances[0].id
-            a=print "Terminating.."
+            print "Terminating.."
             conn.terminate_instances(reservation.instances[0].id)
