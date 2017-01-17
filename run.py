@@ -46,7 +46,7 @@ def do_work(database):
 if __name__ == "__main__":
     startlog=Popen('echo Starting >> process.log', shell=True)
     startlog.wait()
-    #do_work('feedback')
+    do_work('feedback')
     #do_work('fabric')
     conn = boto.ec2.connect_to_region("ap-southeast-1",
             aws_access_key_id=AWSKEYEC,
@@ -58,6 +58,5 @@ if __name__ == "__main__":
         if reservation.instances[0].state=='running':
             print reservation.instances[0].instance_type
             print reservation.instances[0].id
-            a=raw_input("Process Complete. Terminate?")
-            if a=='y' or a=='Y' or a=="yes" or a=="YES":
-                conn.terminate_instances(instance[0].id)
+            a=raw_input("Terminating..")
+            conn.terminate_instances(reservation.instances[0].id)

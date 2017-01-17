@@ -2,16 +2,19 @@ import boto.ec2
 from ProjectConfig import *
 from subprocess import call,Popen
 from fabric.api import *
+import time
 
 conn = boto.ec2.connect_to_region("ap-southeast-1",
-        aws_access_key_id=AWSKEY,
-        aws_secret_access_key=AWSSECRET)
+        aws_access_key_id=AWSKEYEC,
+        aws_secret_access_key=AWSSECRETEC)
 
-conn.run_instances(
+print conn
+conn=conn.run_instances(
     image_id=AMIID,
-    key_name=KEYNAME,
-    security_group_ids=[SECURITY_GRP],
+    key_name=KEYPAIR,
     subnet_id=SUBNET_ID,
+    instance_type="t2.small",
+    security_group_ids=SECURITY_GRP
     )
 
 instance = conn.instances[0]
@@ -24,6 +27,7 @@ while instance.state != 'running':
 instance.add_tag("Name",TAGNAME)
 print instance.public_dns_name
 
+public_dns_name=instance.public_dns_name
 
 def createQuery(table):
  	a=open('create_'+table+'.sql','r')
@@ -51,13 +55,20 @@ def createQuery(table):
 	b.close()
 	return statement
 
-
+time.sleep(120)
 #createQuery('feedback');
 #createQuery('fabric');
-runProcess=Popen('fab -i '+KEYNAME+' -h '+instance.public_dns_name+' get_project', shell=True)
-Popen(["scp","-i",KEYNAME, "ProjectConfig.py", "ubuntu@"+instance.public_dns_name+":callosum/ProjectConfig.py"])
-Popen(["scp","-i",KEYNAME, "created_fabric.sql", "ubuntu@"+instance.public_dns_name+":callosum/created.sql"])
-Popen(["scp","-i",KEYNAME, "delete_fabric.sql", "ubuntu@"+instance.public_dns_name+":callosum/delete.sql"])
-Popen(["scp","-i",KEYNAME, "created_feedback.sql", "ubuntu@"+instance.public_dns_name+":callosum/created.sql"])
-Popen(["scp","-i",KEYNAME, "delete_feedback.sql", "ubuntu@"+instance.public_dns_name+":callosum/delete.sql"])
-runProcess=Popen('fab -i '+KEYNAME+' -h '+instance.public_dns_name+' run', shell=True)
+runProcess=Popen('echo "yes\n"| fab -i '+KEYNAME+' -H '+public_dns_name+' get_project > process.log', shell=True)
+runProcess.wait()
+p=Popen(["scp","-i",KEYNAME,"-oStrictHostKeyChecking=no", "ProjectConfig.py", "ubuntu@"+public_dns_name+":callosum/ProjectConfig.py"])
+p.wait()
+p=Popen(["scp","-i",KEYNAME,"-oStrictHostKeyChecking=no", "created_fabric.sql", "ubuntu@"+public_dns_name+":callosum/created_fabric.sql"])
+p.wait()
+p=Popen(["scp","-i",KEYNAME,"-oStrictHostKeyChecking=no", "delete_fabric.sql", "ubuntu@"+public_dns_name+":callosum/delete_fabric.sql"])
+p.wait()
+p=Popen(["scp","-i",KEYNAME,"-oStrictHostKeyChecking=no", "created_feedback.sql", "ubuntu@"+public_dns_name+":callosum/created_feedback.sql"])
+p.wait()
+p=Popen(["scp","-i",KEYNAME,"-oStrictHostKeyChecking=no", "delete_feedback.sql", "ubuntu@"+public_dns_name+":callosum/delete_feedback.sql"])
+p.wait()
+runProcess=Popen('fab -i '+KEYNAME+' -H '+public_dns_name+' runn >> process.log', shell=True)
+runProcess.wait()
