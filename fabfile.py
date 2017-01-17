@@ -7,10 +7,6 @@ from fabric.api import *
 from ProjectConfig import *
 
 
-env.hosts = [
-  # 'ip.add.rr.ess
-  # 'server2.domain.tld',
-]
 # Set the username
 env.user   = "ubuntu"
 
@@ -22,7 +18,8 @@ def list_file():
     run("ls -l")
 
 def get_project():
-    run("git clone git@github.com:chowmean/callosum.git")
+    run("sudo apt-get install -y git")
+    run("git clone https://github.com/chowmean/callosum.git")
 
 def install_pip():
     run("wget https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz#md5=35f01da33009719497f01a4ba69d63c9")
@@ -40,10 +37,10 @@ def make_installs():
     install_pip()
     get_project()
 
-def run():
+def runn():
     # make_installs()
     # install_pip()
-    get_project()
     #install_dependencies()
-    run('cd callosum')
-    run('python run.py')
+    with cd('callosum'):
+        run('ls')
+        run('python callosum/run.py')
