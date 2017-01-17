@@ -46,13 +46,14 @@ def do_work(database):
 if __name__ == "__main__":
     startlog=Popen('echo Starting >> process.log', shell=True)
     startlog.wait()
-    do_work('feedback')
-    do_work('fabric')
-    # conn = boto.ec2.connect_to_region("ap-southeast-1",
-    #         aws_access_key_id=AWSKEY,
-    #         aws_secret_access_key=AWSSECRET)
-    #
-    #
-    # reservations = conn.get_all_instances(filters={"tag:Name" : TAGNAME})
-    # instance=reservations[0]
+    #do_work('feedback')
+    #do_work('fabric')
+    conn = boto.ec2.connect_to_region("ap-southeast-1",
+            aws_access_key_id=AWSKEY,
+            aws_secret_access_key=AWSSECRET)
+
+
+    reservations = conn.get_all_instances(filters={"tag:Name" : TAGNAME})
+    instance=reservations[0]
+    print instance.instance_id
     # conn.terminate_instances(instance.instance_id)
