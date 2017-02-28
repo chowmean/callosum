@@ -16,13 +16,22 @@ try:
 	for tables in to_hash:
 		for column in to_hash[tables]:
 			update_statement = 'update '+tables+' set ' + column + '=' + 'sha1('+column+')'
-			cursor.execute(update_statement)
+			print 'updating SHA1 hashes'
+			try:
+				cursor.execute(update_statement)
+			except Exception, e:
+				print e.message
 
 	for tables in to_numerical:
 		for column in to_numerical[tables]:
-			update_statement = 'update '+tables+' set ' + column + '=' + column + '*' + str(RANDOM_MULTIPLIER) + '+' + str(RANDOM_ADD)
-			cursor.execute(update_statement)
-except:
+			update_statement = 'update '+tables+' set ' + column + '=' + column + '^' + str(RANDOM_MULTIPLIER) + '+' + str(RANDOM_ADD)
+			print 'updating numerical hashes'
+			try:
+				cursor.execute(update_statement)
+			except Exception, e:
+				print e.message
+except Exception, e:
+	print e.message
 	print 'Please check database name whose yml is present.'
 	exit(1)
 cnx.commit()

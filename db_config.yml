@@ -2,6 +2,10 @@ pii:
     users:
         - name
         - place
+    test:
+        - name
 numerical_hash:
     users:
+        - id
+    test:
         - id
