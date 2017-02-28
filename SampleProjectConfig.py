@@ -20,3 +20,6 @@ KEYPAIR='keypair name'
 SUBNET_ID = 'subnet id'
 TAGNAME = "tag for aws instance"
 SECURITY_GRP = ['security grp']
+RANDOM_MULTIPLIER = 'random_number'
+RANDOM_ADD = 'random_number'
+DATABASE = 'tt'

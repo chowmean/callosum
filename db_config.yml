@@ -1,0 +1,7 @@
+pii:
+    users:
+        - name
+        - place
+numerical_hash:
+    users:
+        - id
